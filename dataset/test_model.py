@@ -26,6 +26,7 @@ while True:
 
     H, W, _ = frame.shape
 
+    frame = cv2.flip(frame, 1)
     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
     results = hands.process(frame_rgb)
@@ -60,7 +61,7 @@ while True:
 
         prediction = model.predict([np.asarray(data_aux)])
 
-        predicted_character = labels_dict[int(prediction[0])]
+        predicted_character = prediction[0]
 
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
         cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,

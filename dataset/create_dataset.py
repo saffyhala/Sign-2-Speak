@@ -17,10 +17,13 @@ DATA_DIR = './data'
 data = []
 labels = []
 if os.path.exists(DATA_DIR):
-    for dir_ in os.listdir(DATA_DIR):
+    for dir_ in sorted(os.listdir(DATA_DIR)):
         dir_path = os.path.join(DATA_DIR, dir_)
         if os.path.isdir(dir_path):
-            for img_path in os.listdir(dir_path):
+            print(f"Processing class {dir_}")
+            for i, img_path in enumerate(os.listdir(dir_path)):
+                if i >= 500:
+                    break
                 if img_path.endswith(('.jpg', '.png', '.jpeg')):
                     data_aux = []
                     x_ = []
@@ -29,7 +32,20 @@ if os.path.exists(DATA_DIR):
                     img = cv2.imread(os.path.join(dir_path, img_path))
                     img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
+                    # Process the original image
                     results = hands.process(img_rgb)
+                    # rest of your code
+
+                    # Reset data_aux, x_, and y_
+                    data_aux = []
+                    x_ = []
+                    y_ = []
+
+                    # Flip the image
+                    img_rgb_flipped = cv2.flip(img_rgb, 1)
+
+                    # Process the flipped image
+                    results = hands.process(img_rgb_flipped)
                     if results.multi_hand_landmarks:
                         for hand_landmarks in results.multi_hand_landmarks:
                             for i in range(len(hand_landmarks.landmark)):
