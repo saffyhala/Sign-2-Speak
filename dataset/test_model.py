@@ -39,6 +39,21 @@ while True:
     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
     results = hands.process(frame_rgb)
+
+
+    # Calculate the width and height of the text box
+    (text_width, text_height) = cv2.getTextSize(f"Current sentence: {sentence}", cv2.FONT_HERSHEY_SIMPLEX, 2, 2)[0]
+
+    # Set the text start position
+    text_x, text_y = 10, 50
+
+    # Draw the rectangle background
+    cv2.rectangle(frame, (text_x - 5, text_y - text_height - 5), (text_x + text_width + 5, text_y + 5), (255, 255, 255), -1)
+
+    # Display the current sentence on the window
+    cv2.putText(frame, f"Current sentence: {sentence}", (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 0), 2, cv2.LINE_AA)
+    
+
     if results.multi_hand_landmarks:
         for hand_landmarks in results.multi_hand_landmarks:
             mp_drawing.draw_landmarks(
@@ -92,17 +107,7 @@ while True:
         cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, color, 3,
                     cv2.LINE_AA)
 
-        # Calculate the width and height of the text box
-        (text_width, text_height) = cv2.getTextSize(f"Current sentence: {sentence}", cv2.FONT_HERSHEY_SIMPLEX, 2, 2)[0]
-
-        # Set the text start position
-        text_x, text_y = 10, 50
-
-        # Draw the rectangle background
-        cv2.rectangle(frame, (text_x - 5, text_y - text_height - 5), (text_x + text_width + 5, text_y + 5), (255, 255, 255), -1)
-
-        # Display the current sentence on the window
-        cv2.putText(frame, f"Current sentence: {sentence}", (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 0), 2, cv2.LINE_AA)
+        
 
     cv2.imshow('frame', frame)
     key = cv2.waitKey(1)
