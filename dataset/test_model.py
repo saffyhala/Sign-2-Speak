@@ -9,7 +9,7 @@ from gtts import gTTS
 model_dict = pickle.load(open('./model.p', 'rb'))
 model = model_dict['model']
 
-cap = cv2.VideoCapture(2)
+cap = cv2.VideoCapture(1)
 
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
